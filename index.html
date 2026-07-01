@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双極症 — 就労移行支援スタッフ向け実践リファレンス</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1e3554;
+      --navy-light: #2d4a6e;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --blue: #2563eb;
+      --blue-light: #dbeafe;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --cream: #f5f4ef;
+      --cream-dark: #e5e4df;
+      --text-main: #1e2a3a;
+      --text-muted: #6b7280;
+      --sans: "Noto Sans JP", sans-serif;
+      --serif: "Noto Serif JP", serif;
+      --shadow: 0 2px 12px rgba(30,53,84,0.10);
+      --shadow-md: 0 4px 20px rgba(30,53,84,0.14);
+      --radius: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--text-main);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--purple));
+      z-index: 9999; width: 0%; transition: width 0.1s linear;
+    }
+    /* NAV */
+    #sticky-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(30,53,84,0.97); backdrop-filter: blur(8px);
+      display: flex; align-items: center;
+      overflow-x: auto; scrollbar-width: none; padding: 0 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    #sticky-nav::-webkit-scrollbar { display: none; }
+    .nav-item {
+      white-space: nowrap; padding: 0.85rem 0.8rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: rgba(255,255,255,0.62); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: var(--sans);
+    }
+    .nav-item:hover, .nav-item.active {
+      color: #fff; border-bottom-color: var(--teal);
+    }
+    /* HERO */
+    .hero {
+      background: linear-gradient(145deg, var(--navy) 0%, #24416a 55%, #192e50 100%);
+      color: #fff; padding: 5rem 2rem 4rem; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 75% 25%, rgba(13,148,136,0.18) 0%, transparent 55%),
+                  radial-gradient(ellipse at 25% 75%, rgba(124,58,237,0.12) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(13,148,136,0.22); color: var(--teal-light);
+      border: 1px solid rgba(13,148,136,0.42);
+      padding: 0.3rem 1rem; border-radius: 100px;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-family: var(--serif); font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 700; letter-spacing: 0.04em; margin-bottom: 0.35rem;
+    }
+    .hero-en { font-size: 1rem; color: rgba(255,255,255,0.5); letter-spacing: 0.12em; margin-bottom: 1.5rem; }
+    .hero-desc {
+      max-width: 580px; margin: 0 auto; color: rgba(255,255,255,0.78);
+      font-size: 0.95rem; line-height: 1.85;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 3.5rem;
+      margin-top: 3rem; flex-wrap: wrap;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      font-family: var(--serif); font-size: 2.2rem; font-weight: 700;
+      color: #fff; line-height: 1;
+    }
+    .hero-stat-num em { color: #5eead4; font-style: normal; }
+    .hero-stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-top: 0.4rem; }
+    /* SECTION */
+    section { padding: 4rem 2rem; }
+    section.alt-bg { background: #fff; }
+    .section-inner { max-width: 860px; margin: 0 auto; }
+    .section-header { margin-bottom: 2.25rem; }
+    .section-num {
+      font-size: 0.7rem; font-weight: 700; color: var(--teal);
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 700; color: var(--navy); line-height: 1.4;
+    }
+    .section-desc { color: var(--text-muted); margin-top: 0.6rem; font-size: 0.9rem; line-height: 1.75; }
+    /* CARDS */
+    .card {
+      background: #fff; border-radius: var(--radius);
+      padding: 1.6rem; box-shadow: var(--shadow);
+      border-left: 4px solid var(--teal);
+    }
+    .card.amber { border-left-color: var(--amber); }
+    .card.blue { border-left-color: var(--blue); }
+    .card.purple { border-left-color: var(--purple); }
+    .card.red { border-left-color: var(--red); }
+    .card.navy { border-left-color: var(--navy); }
+    .card h3 {
+      font-family: var(--serif); font-size: 1.05rem; font-weight: 700;
+      color: var(--navy); margin-bottom: 0.6rem;
+    }
+    .card p, .card li { font-size: 0.9rem; color: var(--text-main); line-height: 1.75; }
+    /* TYPE COMPARISON */
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .type-card { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+    .type-card-hd { padding: 1rem 1.4rem; font-family: var(--serif); font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .type-card-hd.t1 { background: linear-gradient(135deg, var(--purple), #6d28d9); }
+    .type-card-hd.t2 { background: linear-gradient(135deg, var(--teal), #0f766e); }
+    .type-card-bd { background: #fff; padding: 0.25rem 0; }
+    .type-row {
+      display: flex; gap: 0.75rem; padding: 0.65rem 1.4rem;
+      border-bottom: 1px solid var(--cream-dark); align-items: flex-start;
+      font-size: 0.88rem;
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-lbl { font-weight: 700; color: var(--text-muted); font-size: 0.75rem; min-width: 64px; padding-top: 0.15rem; flex-shrink: 0; }
+    /* MISCONCEPTIONS */
+    .misc-list { display: flex; flex-direction: column; gap: 1rem; }
+    .misc-card {
+      background: #fff; border-radius: var(--radius); padding: 1.4rem;
+      box-shadow: var(--shadow); display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      gap: 0.6rem 1rem;
+    }
+    .badge-x {
+      background: var(--red-light); color: var(--red);
+      font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.65rem;
+      border-radius: 100px; white-space: nowrap; height: fit-content;
+    }
+    .badge-o {
+      background: #f0fdf4; color: #16a34a;
+      font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.65rem;
+      border-radius: 100px; white-space: nowrap; height: fit-content;
+    }
+    .misc-text { font-size: 0.9rem; color: var(--text-main); line-height: 1.72; }
+    .misc-divider {
+      grid-column: 1 / -1;
+      border: none; border-top: 1px solid var(--cream-dark);
+    }
+    /* EVIDENCE BOXES */
+    .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .ev-box { border-radius: var(--radius); padding: 1.5rem; }
+    .ev-box.confirmed { background: #f0fdfa; border: 1.5px solid #a7f3d0; }
+    .ev-box.hypothesis { background: #fffbeb; border: 1.5px solid #fde68a; }
+    .ev-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.07em; padding: 0.22rem 0.65rem; border-radius: 100px; margin-bottom: 0.9rem;
+    }
+    .confirmed .ev-tag { background: #ccfbf1; color: #0f766e; }
+    .hypothesis .ev-tag { background: #fde68a; color: #92400e; }
+    .ev-box h4 { font-family: var(--serif); font-size: 0.97rem; font-weight: 700; color: var(--navy); margin-bottom: 0.65rem; }
+    .ev-box ul { list-style: none; padding: 0; }
+    .ev-box li {
+      font-size: 0.88rem; color: var(--text-main); line-height: 1.72;
+      padding: 0.42rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);
+      display: flex; gap: 0.6rem; align-items: flex-start;
+    }
+    .ev-box li:last-child { border-bottom: none; }
+    .ev-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 0.6rem; flex-shrink: 0; }
+    .confirmed .ev-dot { background: var(--teal); }
+    .hypothesis .ev-dot { background: var(--amber); }
+    /* WAVE */
+    .wave-wrap { background: #fff; border-radius: var(--radius); padding: 1.75rem; box-shadow: var(--shadow-md); }
+    .wave-toggle {
+      display: flex; gap: 0.4rem; background: var(--cream); border-radius: 100px;
+      padding: 0.3rem; width: fit-content; margin-bottom: 1.5rem;
+    }
+    .wave-btn {
+      padding: 0.45rem 1.3rem; border-radius: 100px; border: none; cursor: pointer;
+      font-family: var(--sans); font-size: 0.88rem; font-weight: 700;
+      background: transparent; color: var(--text-muted); transition: all 0.3s;
+    }
+    .wave-btn.active { background: var(--navy); color: #fff; box-shadow: 0 2px 8px rgba(30,53,84,0.22); }
+    .wave-svg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .wave-legend {
+      display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: 1rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; color: var(--text-muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    /* ACCORDION */
+    .accordion-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .acc-item { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .acc-hd {
+      width: 100%; text-align: left; padding: 1.2rem 1.4rem;
+      border: none; cursor: pointer; display: flex;
+      align-items: center; justify-content: space-between;
+      font-family: var(--serif); font-size: 1rem; font-weight: 700;
+      color: #fff; transition: filter 0.2s;
+    }
+    .acc-hd:hover { filter: brightness(1.08); }
+    .acc-hd.manic { background: linear-gradient(135deg, #b91c1c, #dc2626); }
+    .acc-hd.hypomanic { background: linear-gradient(135deg, #b45309, #d97706); }
+    .acc-hd.depressive { background: linear-gradient(135deg, #1d4ed8, #2563eb); }
+    .acc-hd.mixed { background: linear-gradient(135deg, #5b21b6, #7c3aed); }
+    .acc-chevron { transition: transform 0.3s; flex-shrink: 0; }
+    .acc-item.open .acc-chevron { transform: rotate(180deg); }
+    .acc-body { background: #fff; overflow: hidden; max-height: 0; transition: max-height 0.4s ease; }
+    .acc-body-inner { padding: 1.4rem; }
+    .acc-duration {
+      display: inline-block; font-size: 0.78rem; font-weight: 700;
+      padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 1rem;
+    }
+    .manic .acc-duration { background: var(--red-light); color: var(--red); }
+    .hypomanic .acc-duration { background: var(--amber-light); color: #92400e; }
+    .depressive .acc-duration { background: var(--blue-light); color: #1d4ed8; }
+    .mixed .acc-duration { background: var(--purple-light); color: #5b21b6; }
+    .sx-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+    .sx-tag {
+      background: var(--cream); border-radius: 8px; padding: 0.4rem 0.75rem;
+      font-size: 0.84rem; color: var(--text-main); display: flex; gap: 0.45rem; align-items: center;
+    }
+    .sx-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .sx-dot.manic { background: var(--red); }
+    .sx-dot.hypomanic { background: var(--amber); }
+    .sx-dot.depressive { background: var(--blue); }
+    .sx-dot.mixed { background: var(--purple); }
+    .acc-note {
+      background: var(--cream); border-radius: 8px; padding: 0.9rem 1.1rem;
+      font-size: 0.85rem; color: var(--text-muted); border-left: 3px solid var(--teal);
+      margin-top: 0.75rem; line-height: 1.7;
+    }
+    .acc-note strong { color: var(--navy); }
+    /* TRAPS */
+    .trap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .trap-card {
+      background: #fff; border-radius: var(--radius);
+      padding: 1.75rem; box-shadow: var(--shadow-md); border-top: 4px solid;
+    }
+    .trap-card.prod { border-top-color: var(--amber); }
+    .trap-card.mixed-st { border-top-color: var(--red); }
+    .trap-card h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 0.75rem 0 0.65rem; }
+    .trap-card p { font-size: 0.9rem; color: var(--text-main); line-height: 1.75; margin-bottom: 0.75rem; }
+    .warn-box {
+      border-radius: 8px; padding: 0.85rem 1rem;
+      font-size: 0.85rem; line-height: 1.68; display: flex; gap: 0.6rem; align-items: flex-start;
+    }
+    .warn-box.red { background: var(--red-light); color: #991b1b; }
+    .warn-box.amber { background: var(--amber-light); color: #92400e; }
+    /* COGNITION */
+    .cog-intro { font-size: 0.9rem; color: var(--text-main); line-height: 1.78; margin-bottom: 1.5rem; }
+    .cog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; }
+    .cog-card {
+      background: #fff; border-radius: var(--radius); padding: 1.4rem;
+      box-shadow: var(--shadow); text-align: center;
+    }
+    .cog-domain { font-family: var(--serif); font-size: 0.97rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+    .cog-bar-bg {
+      background: var(--cream-dark); border-radius: 100px; height: 7px;
+      margin: 0.65rem 0 0.5rem; overflow: hidden;
+    }
+    .cog-bar {
+      height: 100%; border-radius: 100px;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .cog-label { font-size: 0.78rem; color: var(--text-muted); }
+    .cog-ref { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; font-style: italic; }
+    /* WORK IMPACT */
+    .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    .prodrome-section { margin-top: 2rem; }
+    .prodrome-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+    .prodrome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .prodrome-item {
+      background: #fff; border-radius: 10px; padding: 0.9rem 1.1rem;
+      box-shadow: 0 2px 8px rgba(30,53,84,0.07);
+      display: flex; gap: 0.7rem; align-items: flex-start;
+    }
+    .pdot { width: 9px; height: 9px; border-radius: 50%; margin-top: 0.5rem; flex-shrink: 0; }
+    .pdot.manic { background: var(--amber); }
+    .pdot.dep { background: var(--blue); }
+    .prodrome-item p { font-size: 0.88rem; color: var(--text-main); line-height: 1.65; }
+    .prodrome-item p strong { color: var(--navy); font-weight: 700; }
+    /* TREATMENT */
+    .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .pillar-card { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+    .pillar-hd { padding: 1.2rem; color: #fff; text-align: center; }
+    .pillar-hd.p1 { background: linear-gradient(135deg, var(--teal), #0f766e); }
+    .pillar-hd.p2 { background: linear-gradient(135deg, var(--blue), #1d4ed8); }
+    .pillar-hd.p3 { background: linear-gradient(135deg, var(--purple), #6d28d9); }
+    .pillar-num { font-size: 0.7rem; font-weight: 700; opacity: 0.75; letter-spacing: 0.1em; }
+    .pillar-ttl { font-family: var(--serif); font-size: 0.97rem; font-weight: 700; margin-top: 0.35rem; }
+    .pillar-bd { background: #fff; padding: 1.1rem 1.25rem; }
+    .pillar-bd ul { list-style: none; padding: 0; }
+    .pillar-bd li {
+      font-size: 0.86rem; color: var(--text-main); padding: 0.42rem 0;
+      border-bottom: 1px solid var(--cream-dark); line-height: 1.6;
+    }
+    .pillar-bd li:last-child { border-bottom: none; }
+    .pillar-note { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--cream-dark); }
+    .caution-box {
+      background: var(--red-light); border-radius: var(--radius);
+      padding: 1.1rem 1.4rem; display: flex; gap: 0.9rem; align-items: flex-start; margin-top: 1.5rem;
+    }
+    .caution-box p { font-size: 0.88rem; color: #991b1b; line-height: 1.72; }
+    /* PRACTICE */
+    .practice-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .practice-item {
+      background: #fff; border-radius: var(--radius); padding: 1.4rem;
+      box-shadow: var(--shadow); display: flex; gap: 1.3rem; align-items: flex-start;
+    }
+    .prac-num {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--teal);
+      line-height: 1; flex-shrink: 0; min-width: 1.8rem; text-align: center;
+    }
+    .prac-content h4 { font-family: var(--serif); font-size: 0.97rem; font-weight: 700; color: var(--navy); margin-bottom: 0.45rem; }
+    .prac-content p { font-size: 0.88rem; color: var(--text-main); line-height: 1.72; }
+    /* REFS */
+    .ref-list { display: flex; flex-direction: column; gap: 0.65rem; }
+    .ref-item {
+      background: #fff; border-radius: 10px; padding: 0.9rem 1.1rem;
+      box-shadow: 0 2px 8px rgba(30,53,84,0.06);
+      font-size: 0.84rem; color: var(--text-muted); line-height: 1.65;
+    }
+    .ref-item strong { color: var(--navy); }
+    /* FOOTER */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.45);
+      text-align: center; padding: 1.75rem 2rem; font-size: 0.82rem;
+    }
+    footer strong { color: rgba(255,255,255,0.82); }
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* UTIL */
+    .note-sm { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic; }
+    hr.divider { border: none; border-top: 1px solid var(--cream-dark); margin: 1.75rem 0; }
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .type-grid, .ev-grid, .trap-grid, .impact-grid, .prodrome-grid { grid-template-columns: 1fr; }
+      .pillar-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      section { padding: 3rem 1.2rem; }
+      .hero { padding: 3.5rem 1.2rem 3rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .cog-bar { transition: none; }
+    }
+  
+    /* ── 鑑別診断 (S3) ── */
+    .diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+    .diff-card { background: var(--cream); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .diff-hd { padding: 1rem 1.2rem; }
+    .diff-hd-title { font-family: var(--serif); font-size: 1rem; font-weight: 700; color: #fff; }
+    .diff-hd-sub { font-size: 0.72rem; color: rgba(255,255,255,.85); margin-top: 0.2rem; }
+    .diff-body { padding: 1rem 1.2rem; }
+    .diff-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 4px; margin: 0.75rem 0 0.35rem; }
+    .diff-tag.ov { background: #dbeafe; color: #1e3a8a; }
+    .diff-tag.kd { background: #dcfce7; color: #14532d; }
+    .diff-tag.cb { background: #fef9c3; color: #713f12; }
+    .diff-body p { font-size: 0.84rem; color: var(--text-body); margin: 0 0 0.3rem; line-height: 1.6; }
+    .diff-body ul { margin: 0.2rem 0 0.3rem 1.1rem; padding: 0; }
+    .diff-body li { font-size: 0.84rem; color: var(--text-body); margin-bottom: 0.28rem; line-height: 1.55; }
+    .diff-spectrum { background: var(--cream); border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1.4rem; border-left: 4px solid var(--teal); }
+    .diff-spectrum strong { font-family: var(--serif); font-size: 0.92rem; }
+    .diff-spectrum p { font-size: 0.84rem; color: var(--text-body); margin-top: 0.4rem; line-height: 1.65; }
+
+    /* ── 共病 (S7) ── */
+    .comor-intro { font-size: 0.88rem; color: var(--text-body); line-height: 1.75; margin: 0.5rem 0 1.2rem; }
+    .comor-bars { margin: 0 0 1.5rem; }
+    .comor-row { display: flex; align-items: center; gap: 0.8rem; margin: 0.55rem 0; }
+    .comor-lbl { width: 110px; font-size: 0.82rem; color: var(--text-body); flex-shrink: 0; }
+    .comor-bg { flex: 1; background: var(--cream-dark); border-radius: 100px; height: 9px; }
+    .comor-fill { height: 9px; border-radius: 100px; transition: width 1s ease; }
+    .comor-pct { font-size: 0.78rem; font-weight: 700; color: var(--navy); width: 38px; text-align: right; flex-shrink: 0; }
+    .comor-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; }
+    .comor-card { background: #fff; border-radius: 10px; padding: 1rem; border-top: 4px solid var(--teal); }
+    .comor-card-title { font-family: var(--serif); font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+    .comor-card p { font-size: 0.82rem; color: var(--text-body); line-height: 1.6; margin: 0; }
+    .comor-src { font-size: 0.75rem; color: var(--text-muted); margin-top: 1.2rem; line-height: 1.5; }
+
+    /* ── 就労定着 (S11) ── */
+    .retention-intro { font-size: 0.88rem; color: var(--text-body); line-height: 1.75; margin: 0.5rem 0 1.4rem; }
+    .retention-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+    @media (max-width: 620px) { .retention-cols { grid-template-columns: 1fr; } }
+    .ret-col { border-radius: 10px; overflow: hidden; }
+    .ret-col-hd { padding: 0.85rem 1.1rem; color: #fff; font-family: var(--serif); font-weight: 700; font-size: 0.95rem; }
+    .ret-col-hd.challenge { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+    .ret-col-hd.protect { background: linear-gradient(135deg, var(--teal), #0f766e); }
+    .ret-col-body { background: var(--cream); padding: 0.2rem 1rem 0.8rem; }
+    .ret-item { display: flex; gap: 0.65rem; padding: 0.65rem 0; border-bottom: 1px solid var(--cream-dark); align-items: flex-start; }
+    .ret-item:last-child { border-bottom: none; }
+    .ret-icon { flex-shrink: 0; margin-top: 1px; }
+    .ret-item-text { font-size: 0.84rem; color: var(--text-body); line-height: 1.6; }
+    .ret-item-text strong { color: var(--navy); }
+    .mood-diary-box { background: var(--cream); border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1.4rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .mood-diary-box svg { flex-shrink: 0; }
+    .mood-diary-body strong { font-family: var(--serif); font-size: 0.92rem; color: var(--navy); }
+    .mood-diary-body p { font-size: 0.82rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.65; }
+
+  </style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<nav id="sticky-nav">
+    <span class="nav-item" onclick="navJump('s1')">定義</span>
+  <span class="nav-item" onclick="navJump('s2')">誤解</span>
+  <span class="nav-item" onclick="navJump('s3')">鑑別診断</span>
+  <span class="nav-item" onclick="navJump('s4')">脳・遺伝</span>
+  <span class="nav-item" onclick="navJump('s5')">気分の波</span>
+  <span class="nav-item" onclick="navJump('s6')">エピソード</span>
+  <span class="nav-item" onclick="navJump('s7')">共病</span>
+  <span class="nav-item" onclick="navJump('s8')">見えにくい罠</span>
+  <span class="nav-item" onclick="navJump('s9')">認知機能</span>
+  <span class="nav-item" onclick="navJump('s10')">就労への影響</span>
+  <span class="nav-item" onclick="navJump('s11')">就労定着</span>
+  <span class="nav-item" onclick="navJump('s12')">治療</span>
+  <span class="nav-item" onclick="navJump('s13')">支援の実践</span>
+  <span class="nav-item" onclick="navJump('s14')">文献</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-tag">就労移行支援スタッフ向け 実践リファレンス</div>
+  <h1>双極症</h1>
+  <p class="hero-en">Bipolar Disorder</p>
+  <p class="hero-desc">気分の波が繰り返す慢性疾患。「躁（または軽躁）エピソード」と「うつエピソード」が交互に現れ、寛解期にも就労に影響する認知機能への影響が続くことが知られている。</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>6〜10</em>年</div>
+      <div class="hero-stat-label">診断までの平均遅延</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>69</em>%</div>
+      <div class="hero-stat-label">少なくとも1回の誤診経験</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>70〜85</em>%</div>
+      <div class="hero-stat-label">遺伝率（双生児研究）</div>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- S1 定義 -->
+<section id="s1" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">01 / 定義と分類</div>
+    <h2 class="section-title">双極症とは何か</h2>
+    <p class="section-desc">躁（または軽躁）エピソードとうつエピソードを繰り返す気分障害。ICD-11（6A6x）およびDSM-5-TRで「双極症」として分類される（ICD-11・DSM-5-TR共通）。単極性うつ病とは治療アプローチが大きく異なる。</p>
+  </div>
+  <div class="type-grid reveal">
+    <div class="type-card">
+      <div class="type-card-hd t1">双極症Ⅰ型</div>
+      <div class="type-card-bd">
+        <div class="type-row"><span class="type-lbl">定義要件</span><span>完全な躁エピソードが<strong>1回以上</strong>存在する</span></div>
+        <div class="type-row"><span class="type-lbl">躁の重症度</span><span>7日以上続く（または入院・精神病症状を伴う場合は期間不問）</span></div>
+        <div class="type-row"><span class="type-lbl">うつ病相</span><span>存在することが多いが診断には必須でない</span></div>
+        <div class="type-row"><span class="type-lbl">外見上の特徴</span><span>「大きな問題」として周囲が気づきやすい。入院歴を持つ人も</span></div>
+        <div class="type-row"><span class="type-lbl">有病率</span><span>生涯約0.6%（DSM-5-TR）</span></div>
+      </div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-hd t2">双極症Ⅱ型</div>
+      <div class="type-card-bd">
+        <div class="type-row"><span class="type-lbl">定義要件</span><span>軽躁エピソード＋うつエピソード。完全な躁エピソードは<strong>なし</strong></span></div>
+        <div class="type-row"><span class="type-lbl">軽躁の特徴</span><span>4日以上。「問題なく機能できている」ように見える場合が多い</span></div>
+        <div class="type-row"><span class="type-lbl">うつ病相</span><span>Ⅰ型よりも長期・頻回で、経過の主体になりやすい</span></div>
+        <div class="type-row"><span class="type-lbl">外見上の特徴</span><span>うつ病と誤診されやすい。「気分が回復している時期」が軽躁として見逃される</span></div>
+        <div class="type-row"><span class="type-lbl">有病率</span><span>生涯約0.4%（DSM-5-TR）</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="note-sm reveal" style="margin-top:1rem;">※双極スペクトラム全体（閾値下を含む）の有病率は2〜4%と推定される。急速交代型（4エピソード/年以上）は全体の約15〜20%。</p>
+</div>
+</section>
+
+<!-- S2 誤解 -->
+<section id="s2">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">02 / よくある誤解</div>
+    <h2 class="section-title">3つの誤解と正確な理解</h2>
+    <p class="section-desc">支援現場で見かける誤解を整理する。誤解は支援のタイミングを遅らせたり、本人への不適切な期待につながりやすい。</p>
+  </div>
+  <div class="misc-list">
+    <div class="misc-card reveal">
+      <span class="badge-x">✗ 誤解</span>
+      <p class="misc-text">「気分が変わりやすい人」「気分屋」で、ちょっとしたことで落ち込んだり元気になったりする</p>
+      <hr class="misc-divider">
+      <span class="badge-o">✓ 正確には</span>
+      <p class="misc-text">各エピソードは<strong>日単位・週単位</strong>で持続する神経生物学的な状態変化であり、「気分屋」とは本質的に異なる。躁エピソードは最低7日間（軽躁は4日間）継続することが診断基準に含まれている。</p>
+    </div>
+    <div class="misc-card reveal">
+      <span class="badge-x">✗ 誤解</span>
+      <p class="misc-text">「重いうつ病」の一種であり、主に気分が落ち込む病気だ</p>
+      <hr class="misc-divider">
+      <span class="badge-o">✓ 正確には</span>
+      <p class="misc-text">躁・軽躁エピソードの存在が双極症の診断の核心である。特に双極症Ⅱ型はうつ病相が前景に出るが、<strong>抗うつ薬単独投与による躁転リスク</strong>があり、単極性うつ病とは治療が大きく異なる。</p>
+    </div>
+    <div class="misc-card reveal">
+      <span class="badge-x">✗ 誤解</span>
+      <p class="misc-text">本人の「意志の力」や「生活習慣の改善」で気分を安定させられる病気だ</p>
+      <hr class="misc-divider">
+      <span class="badge-o">✓ 正確には</span>
+      <p class="misc-text">遺伝率70〜85%の神経生物学的疾患であり、薬物療法（気分安定薬等）と心理社会的介入の組み合わせが標準的な治療。生活リズムの安定は<strong>補助的な再発予防</strong>として重要だが、それだけで治療が完結するわけではない。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S3 鑑別診断 -->
+<section id="s3" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">03 / 鑑別診断</div>
+    <h2 class="section-title">よく混同される3つの状態</h2>
+    <p class="section-desc">双極症は「うつ病」「ADHD」「境界性パーソナリティ症」と症状が重なる部分が多く、誤診・診断遅延の背景となる。混同の理由と区別のポイント、さらに共存しうる点を押さえておく。</p>
+  </div>
+
+  <div class="diff-grid reveal">
+
+    <!-- Card 1: 単極性うつ病 -->
+    <div class="diff-card">
+      <div class="diff-hd" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">
+        <div class="diff-hd-title">単極性うつ病</div>
+        <div class="diff-hd-sub">最も多い誤診先</div>
+      </div>
+      <div class="diff-body">
+        <div class="diff-tag ov">症状の重なり</div>
+        <p>抑うつ気分・睡眠変化・疲労感・集中困難・興味の喪失</p>
+        <div class="diff-tag kd">区別のポイント</div>
+        <ul>
+          <li>双極症は過去に躁または軽躁エピソードがある</li>
+          <li>若年発症・エピソード頻度が高い・過眠・過食などの非定型うつ像</li>
+          <li>抗うつ薬への反応が乏しい、または躁転が起きた場合は双極症を疑う</li>
+        </ul>
+        <div class="diff-tag cb">支援上の含意</div>
+        <p>双極症うつ病相は外見上単極性うつ病と区別できない。支援者側から軽躁エピソードの既往を能動的に確認することが重要。</p>
+      </div>
+    </div>
+
+    <!-- Card 2: ADHD -->
+    <div class="diff-card">
+      <div class="diff-hd" style="background:linear-gradient(135deg,#d97706,#b45309);">
+        <div class="diff-hd-title">ADHD</div>
+        <div class="diff-hd-sub">慢性症状 vs エピソード的変動</div>
+      </div>
+      <div class="diff-body">
+        <div class="diff-tag ov">症状の重なり</div>
+        <p>不注意・衝動性・情動調節困難・睡眠問題・多弁・エネルギーの波</p>
+        <div class="diff-tag kd">区別のポイント</div>
+        <ul>
+          <li>ADHDは幼少期から持続的に存在し、エピソード的な変動はない</li>
+          <li>双極症は明確な「ベースラインからの変化」としてエピソードが生じる</li>
+          <li>双極症のエネルギー増大は睡眠減少を伴い日単位で変化する</li>
+        </ul>
+        <div class="diff-tag cb">共存の可能性</div>
+        <p>双極症の推定15〜20%にADHDが併存する（Nierenberg et al., 2005, J Clin Psychiatry）。共存例は機能障害がより大きく、支援の複雑さが増す。</p>
+      </div>
+    </div>
+
+    <!-- Card 3: BPD -->
+    <div class="diff-card">
+      <div class="diff-hd" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">
+        <div class="diff-hd-title">境界性パーソナリティ症</div>
+        <div class="diff-hd-sub">双極症Ⅱ型と特に混同されやすい</div>
+      </div>
+      <div class="diff-body">
+        <div class="diff-tag ov">症状の重なり</div>
+        <p>気分の不安定さ・衝動性・自傷・対人関係の困難・空虚感</p>
+        <div class="diff-tag kd">区別のポイント</div>
+        <ul>
+          <li>BPDの気分変化は分〜時間単位で、対人的な引き金に反応して起きる</li>
+          <li>双極症のエピソードは日〜週単位で持続し、明確なトリガーなく出現することもある</li>
+          <li>BPDでは見捨てられ不安・アイデンティティの拡散・慢性的な空虚感が中核にある</li>
+        </ul>
+        <div class="diff-tag cb">共存の可能性</div>
+        <p>BPDと双極症の共存は約20%と推定されており（Paris et al., 2007, J Nerv Ment Dis）、単純な二択ではなく複合的に捉える必要がある。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="diff-spectrum reveal">
+    <strong>双極スペクトラムについて：気分循環症（サイクロサイミア）</strong>
+    <p>ICD-11・DSM-5-TRでは「双極症Ⅰ型」「双極症Ⅱ型」に加えて気分循環症が双極スペクトラムに含まれる。軽躁・軽うつが2年以上繰り返されるが、いずれもフルエピソードの基準を満たさない状態で、気分の波が「個性」や「性格」として見過ごされやすい。就労場面では気分の浮き沈みによる定着困難として現れることがある。</p>
+  </div>
+
+</div>
+</section>
+
+
+<!-- S4 脳 -->
+<section id="s4">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">04 / 神経生物学</div>
+    <h2 class="section-title">脳内で何が起きているか</h2>
+    <p class="section-desc">「確認された知見」と「有力だが未確立の仮説」を区別して理解する。研究の知見は集団統計であり、個々のケースに直接当てはめる際は注意が必要。</p>
+  </div>
+  <div class="ev-grid reveal">
+    <div class="ev-box confirmed">
+      <span class="ev-tag">確認された知見</span>
+      <h4>研究で示されていること</h4>
+      <ul>
+        <li><span class="ev-dot"></span>遺伝率は70〜85%（一卵性双生児研究。McGuffin et al., 2003）</li>
+        <li><span class="ev-dot"></span>一卵性双生児での一致率は約40〜70%（遺伝要因のみでは説明されない）</li>
+        <li><span class="ev-dot"></span>扁桃体の過活動と前頭前皮質による感情調節の障害（複数の神経画像研究）</li>
+        <li><span class="ev-dot"></span>概日リズム遺伝子の関与（CLOCK遺伝子等）。睡眠・覚醒リズムの乱れがエピソードのトリガーになりやすい</li>
+        <li><span class="ev-dot"></span>ストレスフルなライフイベントが初回エピソードに先行する傾向（後続エピソードでは薄れる）</li>
+      </ul>
+    </div>
+    <div class="ev-box hypothesis">
+      <span class="ev-tag">有力だが未確立の仮説</span>
+      <h4>「仮説」として扱うべきこと</h4>
+      <ul>
+        <li><span class="ev-dot"></span><strong>キンドリング仮説：</strong>ストレスイベントの繰り返しが神経の「発火しやすさ」を増大させ、後のエピソードが自律的に生じるようになるという仮説。動物モデルから着想されたが、双極症への直接的な適用は確立されていない</li>
+        <li><span class="ev-dot"></span><strong>モノアミン仮説：</strong>セロトニン・ドーパミン・ノルアドレナリンの調節異常。実際の機序はより複雑と考えられている</li>
+        <li><span class="ev-dot"></span><strong>炎症・免疫仮説：</strong>炎症性サイトカインの関与を示す知見があるが、因果関係は未確立</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note-sm reveal" style="margin-top:1rem;">「研究は研究」——集団レベルで確認された傾向が、目の前のケースにそのまま当てはまるとは限らない。個人の経過・背景・文脈を丁寧に聴くことが不可欠。</p>
+</div>
+</section>
+
+<!-- S5 気分の波 -->
+<section id="s5" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">05 / 気分の波のパターン</div>
+    <h2 class="section-title">Ⅰ型とⅡ型の気分変動の違い</h2>
+    <p class="section-desc">双極症Ⅰ型とⅡ型では、気分の高揚（躁・軽躁）の「高さ」が異なる。どちらもうつ病相の深さは同程度になりうる。ボタンで切り替えて確認できる。</p>
+  </div>
+  <div class="wave-wrap reveal">
+    <div class="wave-toggle">
+      <button class="wave-btn active" id="btn-t1" onclick="toggleWave(1)">双極症Ⅰ型</button>
+      <button class="wave-btn" id="btn-t2" onclick="toggleWave(2)">双極症Ⅱ型</button>
+    </div>
+    <div class="wave-svg-scroll">
+      <svg viewBox="0 0 900 280" width="900" height="280" xmlns="http://www.w3.org/2000/svg" aria-label="双極症の気分変動グラフ">
+        <defs>
+          <clipPath id="clip-up"><rect x="0" y="0" width="900" height="145"/></clipPath>
+          <clipPath id="clip-dn"><rect x="0" y="145" width="900" height="135"/></clipPath>
+        </defs>
+        <!-- Zone backgrounds -->
+        <rect x="0" y="0" width="900" height="90" fill="rgba(220,38,38,0.07)"/>
+        <rect x="0" y="90" width="900" height="45" fill="rgba(217,119,6,0.07)"/>
+        <rect x="0" y="135" width="900" height="28" fill="rgba(13,148,136,0.09)"/>
+        <rect x="0" y="163" width="900" height="117" fill="rgba(37,99,235,0.07)"/>
+        <!-- Zone labels left -->
+        <text x="8" y="50" font-family="Noto Sans JP,sans-serif" font-size="11" fill="rgba(220,38,38,0.75)" font-weight="700">躁ゾーン</text>
+        <text x="8" y="118" font-family="Noto Sans JP,sans-serif" font-size="11" fill="rgba(180,83,9,0.75)" font-weight="700">軽躁ゾーン</text>
+        <text x="8" y="155" font-family="Noto Sans JP,sans-serif" font-size="11" fill="rgba(13,148,136,0.85)" font-weight="700">安定範囲</text>
+        <text x="8" y="232" font-family="Noto Sans JP,sans-serif" font-size="11" fill="rgba(37,99,235,0.75)" font-weight="700">うつゾーン</text>
+        <!-- Baseline -->
+        <line x1="0" y1="145" x2="900" y2="145" stroke="rgba(100,120,140,0.3)" stroke-dasharray="5,4" stroke-width="1.5"/>
+        <!-- Zone boundary lines -->
+        <line x1="0" y1="90" x2="900" y2="90" stroke="rgba(220,38,38,0.2)" stroke-dasharray="3,5" stroke-width="1"/>
+        <line x1="0" y1="135" x2="900" y2="135" stroke="rgba(217,119,6,0.2)" stroke-dasharray="3,5" stroke-width="1"/>
+        <line x1="0" y1="163" x2="900" y2="163" stroke="rgba(37,99,235,0.2)" stroke-dasharray="3,5" stroke-width="1"/>
+        <!-- TypeI Group -->
+        <g id="wave-t1" style="opacity:1;transition:opacity 0.5s">
+          <!-- Fill above baseline -->
+          <path clip-path="url(#clip-up)" d="M 0,145 C 40,145 55,140 78,128 C 101,116 105,14 150,11 C 195,8 210,11 238,145 C 262,238 276,254 314,256 C 350,256 374,236 398,160 C 416,124 440,142 467,145 C 507,145 518,14 562,11 C 606,8 624,11 650,145 C 670,232 685,254 720,256 C 753,256 779,222 814,160 C 840,128 872,144 900,145 L 900,145 L 0,145 Z" fill="rgba(220,38,38,0.1)"/>
+          <!-- Fill below baseline -->
+          <path clip-path="url(#clip-dn)" d="M 0,145 C 40,145 55,140 78,128 C 101,116 105,14 150,11 C 195,8 210,11 238,145 C 262,238 276,254 314,256 C 350,256 374,236 398,160 C 416,124 440,142 467,145 C 507,145 518,14 562,11 C 606,8 624,11 650,145 C 670,232 685,254 720,256 C 753,256 779,222 814,160 C 840,128 872,144 900,145 L 900,145 L 0,145 Z" fill="rgba(37,99,235,0.1)"/>
+          <!-- Line -->
+          <path d="M 0,145 C 40,145 55,140 78,128 C 101,116 105,14 150,11 C 195,8 210,11 238,145 C 262,238 276,254 314,256 C 350,256 374,236 398,160 C 416,124 440,142 467,145 C 507,145 518,14 562,11 C 606,8 624,11 650,145 C 670,232 685,254 720,256 C 753,256 779,222 814,160 C 840,128 872,144 900,145" fill="none" stroke="#7c3aed" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Manic peak annotations -->
+          <circle cx="150" cy="11" r="5" fill="#dc2626"/>
+          <text x="160" y="16" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#dc2626" font-weight="700">躁エピソード（7日以上）</text>
+          <circle cx="562" cy="11" r="5" fill="#dc2626"/>
+          <!-- Depression annotations -->
+          <circle cx="314" cy="256" r="5" fill="#2563eb"/>
+          <text x="220" y="274" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#2563eb" font-weight="700">うつエピソード（2週間以上）</text>
+          <circle cx="720" cy="256" r="5" fill="#2563eb"/>
+        </g>
+        <!-- TypeII Group -->
+        <g id="wave-t2" style="opacity:0;transition:opacity 0.5s">
+          <!-- Fill above baseline -->
+          <path clip-path="url(#clip-up)" d="M 0,145 C 40,145 55,140 78,137 C 101,132 105,106 150,103 C 195,100 210,102 238,145 C 262,218 276,242 314,244 C 350,244 374,222 398,155 C 416,128 440,142 467,145 C 507,145 518,103 562,100 C 606,97 624,99 650,145 C 670,218 685,242 720,244 C 753,244 779,220 814,155 C 840,128 872,144 900,145 L 900,145 L 0,145 Z" fill="rgba(217,119,6,0.1)"/>
+          <!-- Fill below baseline -->
+          <path clip-path="url(#clip-dn)" d="M 0,145 C 40,145 55,140 78,137 C 101,132 105,106 150,103 C 195,100 210,102 238,145 C 262,218 276,242 314,244 C 350,244 374,222 398,155 C 416,128 440,142 467,145 C 507,145 518,103 562,100 C 606,97 624,99 650,145 C 670,218 685,242 720,244 C 753,244 779,220 814,155 C 840,128 872,144 900,145 L 900,145 L 0,145 Z" fill="rgba(37,99,235,0.1)"/>
+          <!-- Line -->
+          <path d="M 0,145 C 40,145 55,140 78,137 C 101,132 105,106 150,103 C 195,100 210,102 238,145 C 262,218 276,242 314,244 C 350,244 374,222 398,155 C 416,128 440,142 467,145 C 507,145 518,103 562,100 C 606,97 624,99 650,145 C 670,218 685,242 720,244 C 753,244 779,220 814,155 C 840,128 872,144 900,145" fill="none" stroke="#0d9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Hypomanic peak annotations -->
+          <circle cx="150" cy="103" r="5" fill="#d97706"/>
+          <text x="160" y="108" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#d97706" font-weight="700">軽躁エピソード（4日以上）</text>
+          <circle cx="562" cy="100" r="5" fill="#d97706"/>
+          <!-- Depression annotations -->
+          <circle cx="314" cy="244" r="5" fill="#2563eb"/>
+          <text x="220" y="270" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#2563eb" font-weight="700">うつエピソード（2週間以上）</text>
+          <circle cx="720" cy="244" r="5" fill="#2563eb"/>
+        </g>
+        <!-- Time arrow -->
+        <line x1="0" y1="273" x2="895" y2="273" stroke="rgba(100,120,140,0.35)" stroke-width="1.5"/>
+        <polygon points="895,270 900,273 895,276" fill="rgba(100,120,140,0.5)"/>
+        <text x="870" y="270" font-family="Noto Sans JP,sans-serif" font-size="10" fill="rgba(100,120,140,0.7)">時間</text>
+      </svg>
+    </div>
+    <div class="wave-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#7c3aed;"></div>双極症Ⅰ型の軌跡</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#0d9488;"></div>双極症Ⅱ型の軌跡</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(220,38,38,0.5);"></div>躁ゾーン</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(217,119,6,0.5);"></div>軽躁ゾーン</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(37,99,235,0.5);"></div>うつゾーン</div>
+    </div>
+    <p class="note-sm" style="margin-top:0.75rem;">※模式図。実際の経過は個人差が大きく、エピソードの頻度・長さ・深さは多様。</p>
+  </div>
+</div>
+</section>
+
+<!-- S6 エピソード -->
+<section id="s6">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">06 / エピソードの種類</div>
+    <h2 class="section-title">4つのエピソードを理解する</h2>
+    <p class="section-desc">各エピソードは「状態の種類」であり、連続する気分の変化とは区別する。各カードを開いて詳細を確認できる。</p>
+  </div>
+  <div class="accordion-list reveal">
+    <!-- 躁 -->
+    <div class="acc-item" id="acc0">
+      <button class="acc-hd manic" onclick="toggleAcc(0)" aria-expanded="false">
+        <span>躁エピソード（Manic Episode）</span>
+        <svg class="acc-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body" id="acc-body0">
+        <div class="acc-body-inner">
+          <span class="acc-duration manic">7日以上（または入院・精神病症状を伴う場合は期間不問）</span>
+          <p style="font-size:0.88rem;color:#4b5563;margin-bottom:0.8rem;">DSM-5-TRの診断基準A：「高揚した・開放的・または易怒的気分」＋「目標指向的エネルギーの増大」（ほぼ毎日、1日のほとんど）</p>
+          <p style="font-size:0.85rem;font-weight:700;color:#1e3554;margin-bottom:0.5rem;">症状（以下のうち3つ以上。気分が易怒性のみの場合は4つ以上）</p>
+          <div class="sx-grid">
+            <span class="sx-tag"><span class="sx-dot manic"></span>誇大感・自己評価の膨張</span>
+            <span class="sx-tag"><span class="sx-dot manic"></span>睡眠欲求の減少（3〜4時間で十分と感じる）</span>
+            <span class="sx-tag"><span class="sx-dot manic"></span>多弁・早口・止まらない話</span>
+            <span class="sx-tag"><span class="sx-dot manic"></span>考えの奔逸（思考が次々と飛ぶ）</span>
+            <span class="sx-tag"><span class="sx-dot manic"></span>注意散漫（些細な刺激に次々と向く）</span>
+            <span class="sx-tag"><span class="sx-dot manic"></span>目標指向活動の増加（仕事・社交・性的活動）</span>
+            <span class="sx-tag"><span class="sx-dot manic"></span>衝動的・無謀な行動（過剰支出、無謀な運転等）</span>
+          </div>
+          <div class="acc-note">
+            <strong>就労移行での観察：</strong>「急に複数のプロジェクトを同時に始める」「睡眠を削っても元気と言う」「批判に過剰に反応する」「金銭的な決定を衝動的に行う」。本人はこの状態を「調子がいい」と感じているため、介入を受け入れにくい場合が多い。
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 軽躁 -->
+    <div class="acc-item" id="acc1">
+      <button class="acc-hd hypomanic" onclick="toggleAcc(1)" aria-expanded="false">
+        <span>軽躁エピソード（Hypomanic Episode）</span>
+        <svg class="acc-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body" id="acc-body1">
+        <div class="acc-body-inner">
+          <span class="acc-duration hypomanic">4日以上（入院を要しない。社会機能は「むしろ高い」と感じられる場合も）</span>
+          <p style="font-size:0.88rem;color:#4b5563;margin-bottom:0.8rem;">症状は躁エピソードと同様（A基準）。しかし「重症度が低く、社会機能を著しく損なわない」点が躁と異なる。</p>
+          <div class="sx-grid">
+            <span class="sx-tag"><span class="sx-dot hypomanic"></span>普段よりも活気がある・社交的</span>
+            <span class="sx-tag"><span class="sx-dot hypomanic"></span>睡眠が少なくても疲れない</span>
+            <span class="sx-tag"><span class="sx-dot hypomanic"></span>思考が速い・アイデアが豊富</span>
+            <span class="sx-tag"><span class="sx-dot hypomanic"></span>自信が高まっている</span>
+            <span class="sx-tag"><span class="sx-dot hypomanic"></span>話が多い（ただし会話は成立する）</span>
+          </div>
+          <div class="acc-note">
+            <strong>就労移行での観察：</strong>「絶好調」「もう就職できます」という発言が増える。行動量が増え、プログラムへの参加率も上がることがある。このため「回復した」と誤認されやすい。<strong>⚠ この状態での就職決定は過活動に基づく可能性があり、クラッシュ後の早期離職につながりやすい。</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- うつ -->
+    <div class="acc-item" id="acc2">
+      <button class="acc-hd depressive" onclick="toggleAcc(2)" aria-expanded="false">
+        <span>うつエピソード（Depressive Episode）</span>
+        <svg class="acc-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body" id="acc-body2">
+        <div class="acc-body-inner">
+          <span class="acc-duration depressive">2週間以上（ほぼ毎日）</span>
+          <p style="font-size:0.88rem;color:#4b5563;margin-bottom:0.8rem;">以下の①②のうち少なくとも1つを含む5つ以上の症状が必要（DSM-5-TR）</p>
+          <div class="sx-grid">
+            <span class="sx-tag"><span class="sx-dot depressive"></span>①抑うつ気分（空虚感・悲しみ）</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>②興味・喜びの喪失（アンヘドニア）</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>食欲・体重の変化</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>睡眠障害（不眠または過眠）</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>精神運動の変化（焦燥または制止）</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>疲労感・気力の減退</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>無価値感・過剰な罪責感</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>思考力・集中力の減退</span>
+            <span class="sx-tag"><span class="sx-dot depressive"></span>希死念慮・自殺企図</span>
+          </div>
+          <div class="acc-note">
+            <strong>双極症のうつと単極性うつ病の違い：</strong>双極症のうつでは過眠・過食・鉛様麻痺（体が重く動けない感覚）が出やすいとされる。<strong>抗うつ薬単独使用は躁転リスクがあるため禁忌に近い</strong>（日本うつ病学会ガイドライン）。診断を確認した上で主治医と治療方針を共有することが重要。
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 混合 -->
+    <div class="acc-item" id="acc3">
+      <button class="acc-hd mixed" onclick="toggleAcc(3)" aria-expanded="false">
+        <span>混合特徴（Mixed Features specifier）</span>
+        <svg class="acc-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body" id="acc-body3">
+        <div class="acc-body-inner">
+          <span class="acc-duration mixed">DSM-5-TR 追加特定用語（specifier）</span>
+          <p style="font-size:0.88rem;color:#4b5563;margin-bottom:0.8rem;">躁・軽躁エピソード中に3つ以上のうつ症状が同時に存在する、またはうつエピソード中に3つ以上の(軽)躁症状が同時に存在する状態。</p>
+          <div class="sx-grid">
+            <span class="sx-tag"><span class="sx-dot mixed"></span>うつの絶望感＋躁のエネルギーが共存</span>
+            <span class="sx-tag"><span class="sx-dot mixed"></span>「回復しているように見える」うつ</span>
+            <span class="sx-tag"><span class="sx-dot mixed"></span>焦燥感と制止が混在する</span>
+            <span class="sx-tag"><span class="sx-dot mixed"></span>衝動性が高まった状態での希死念慮</span>
+          </div>
+          <div class="acc-note" style="border-left-color:#dc2626;">
+            <strong>⚠ 混合状態は最も自殺リスクが高い状態の一つ。</strong>「元気になってきた」「行動力が戻ってきた」と見えることがある。うつから回復しているように見えても不安・焦燥・衝動性が高まっているサインを見逃さない。自殺リスクのアセスメントを行い、主治医と速やかに連携する。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S7 共病 -->
+<section id="s7" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">07 / 併存疾患</div>
+    <h2 class="section-title">双極症と同時に抱えやすい困難 — 共病</h2>
+    <p class="section-desc">双極症が「単独」で経過する人は少数派。複数の診断が重なる「共病（コモービディティ）」は機能障害を複合的に悪化させ、就労支援における課題を複雑にする。</p>
+  </div>
+
+  <p class="comor-intro reveal">Merikangas et al.（2007, Arch Gen Psychiatry）の米国全国調査では、双極症Ⅰ型を持つ人の9割以上に少なくとも1つの生涯合併精神疾患が認められた。以下は主な共病の生涯有病率の目安。ただし数値は集団統計であり個人差は大きい。</p>
+
+  <div class="comor-bars reveal">
+    <div class="comor-row">
+      <div class="comor-lbl">不安症群</div>
+      <div class="comor-bg"><div class="comor-fill" style="width:75%;background:var(--blue);"></div></div>
+      <div class="comor-pct">約75%</div>
+    </div>
+    <div class="comor-row">
+      <div class="comor-lbl">物質使用症群</div>
+      <div class="comor-bg"><div class="comor-fill" style="width:42%;background:var(--amber);"></div></div>
+      <div class="comor-pct">約42%</div>
+    </div>
+    <div class="comor-row">
+      <div class="comor-lbl">衝動制御症群</div>
+      <div class="comor-bg"><div class="comor-fill" style="width:36%;background:var(--purple);"></div></div>
+      <div class="comor-pct">約36%</div>
+    </div>
+    <div class="comor-row">
+      <div class="comor-lbl">ADHD（推定）</div>
+      <div class="comor-bg"><div class="comor-fill" style="width:20%;background:var(--teal);"></div></div>
+      <div class="comor-pct">15〜20%</div>
+    </div>
+  </div>
+
+  <div class="comor-cards reveal">
+    <div class="comor-card">
+      <div class="comor-card-title">不安症群との共存</div>
+      <p>パニック症・社交不安症・全般不安症が多い。不安症状がうつ病相を増悪させ、行動範囲を狭め、就労継続の障壁になりやすい。「外出できない」「電話が怖い」などの訴えが実は不安症の症状である場合がある。</p>
+    </div>
+    <div class="comor-card">
+      <div class="comor-card-title">物質使用症との共存</div>
+      <p>アルコールが最も多い。気分症状への自己対処（セルフメディケーション）として使用が始まりやすい。物質使用は睡眠を破壊し、気分安定薬の効果を妨げ、エピソードを増悪させる悪循環につながる。</p>
+    </div>
+    <div class="comor-card">
+      <div class="comor-card-title">ADHDとの共存</div>
+      <p>単独ADHD・単独双極症とは異なり、共存例では認知機能障害がより重篤で就労継続率が低い傾向にある。ADHDへの刺激薬投与は双極症の躁転リスクを考慮して慎重に行う必要がある。</p>
+    </div>
+  </div>
+
+  <p class="comor-src reveal">出典：Merikangas KR et al. (2007). Lifetime and 12-month prevalence of bipolar spectrum disorder in the National Comorbidity Survey replication. <em>Arch Gen Psychiatry</em>, 64(5), 543–552. | Nierenberg AA et al. (2005). <em>J Clin Psychiatry</em>, 66(Suppl.5), 13–17.</p>
+
+</div>
+</section>
+
+
+<!-- S8 罠 -->
+<section id="s8">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">08 / 見えにくい罠</div>
+    <h2 class="section-title">就労移行支援で見逃しやすい2つの罠</h2>
+    <p class="section-desc">就労移行の文脈で特に注意が必要なパターン。どちらも「良い変化」に見えるため、支援者が意識的に注目していないと見落とされやすい。</p>
+  </div>
+  <div class="trap-grid reveal">
+    <div class="trap-card prod">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <h3>罠①：軽躁期の「生産性の罠」</h3>
+      <p>「調子がいい」「やる気が出てきた」——支援者も本人もこの変化を素直に喜びたい。しかし軽躁期には、睡眠を削りながらも精力的に活動し、複数の計画を同時に立て、就職に向けた意欲が急激に高まるパターンがある。</p>
+      <p>問題は<strong>この「絶好調」が持続しない</strong>点にある。過活動の末にクラッシュし、深いうつエピソードに転じることがある。または衝動的に就職を決め、軽躁が収まった後に環境への適応が崩れる。</p>
+      <div class="warn-box amber">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span><strong>観察点：</strong>急な多弁・計画の増加・「もうすぐ就職できます」発言。睡眠時間を確認する。過活動を無条件に肯定せず「睡眠は取れていますか?」を添える。</span>
+      </div>
+    </div>
+    <div class="trap-card mixed-st">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h3>罠②：混合状態の危険を見逃す</h3>
+      <p>うつのどん底にいる人は「死にたい」と思っても、動く力がないことが多い。しかし混合状態では、<strong>「死にたい気持ち（絶望感）」と「それを実行できるエネルギー（躁成分）」が共存する</strong>。</p>
+      <p>外見上は「少し元気になってきた」「行動力が戻ってきた」ように見えることがある。焦燥感・不安・衝動性が高まっている状態は、むしろ危険のサインとして受け止める必要がある。</p>
+      <div class="warn-box red">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span><strong>対応：</strong>「元気になった」と見えても焦燥・衝動性が高まっているなら主治医へ速やかに連携。自殺リスクのアセスメントは支援者が単独で行うのではなく、精神科との連携のもとで。</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S9 認知 -->
+<section id="s9" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">09 / 認知機能への影響</div>
+    <h2 class="section-title">寛解期にも続く認知機能の低下</h2>
+  </div>
+  <p class="cog-intro reveal">Bora et al.（2009）のメタ分析は、気分エピソードが落ち着いている「寛解期」の双極症患者と健常者を比較し、複数の認知領域で有意な差を確認した。これは「気分が安定していれば認知も正常」ではないことを示している。ただし個人差は大きく、認知機能は正常範囲にある人も多い。</p>
+  <div class="cog-grid reveal">
+    <div class="cog-card">
+      <div class="cog-domain">処理速度</div>
+      <div class="cog-bar-bg"><div class="cog-bar" data-width="72%"></div></div>
+      <div class="cog-label">健常者比で有意な低下（中〜大の効果量）</div>
+    </div>
+    <div class="cog-card">
+      <div class="cog-domain">言語記憶</div>
+      <div class="cog-bar-bg"><div class="cog-bar" data-width="65%"></div></div>
+      <div class="cog-label">情報の符号化・想起の困難</div>
+    </div>
+    <div class="cog-card">
+      <div class="cog-domain">作業記憶</div>
+      <div class="cog-bar-bg"><div class="cog-bar" data-width="60%"></div></div>
+      <div class="cog-label">複数タスクの同時保持が難しい</div>
+    </div>
+    <div class="cog-card">
+      <div class="cog-domain">遂行機能</div>
+      <div class="cog-bar-bg"><div class="cog-bar" data-width="68%"></div></div>
+      <div class="cog-label">計画立案・優先順位づけの困難</div>
+    </div>
+    <div class="cog-card">
+      <div class="cog-domain">注意・集中</div>
+      <div class="cog-bar-bg"><div class="cog-bar" data-width="62%"></div></div>
+      <div class="cog-label">持続的注意の維持が難しい</div>
+    </div>
+  </div>
+  <p class="cog-ref reveal">棒グラフの長さは相対的な影響度のイメージ（数値は健常者比の差の大きさを示す概念的指標であり直接的な検査スコアではない）。出典：Bora E, Yucel M, Pantelis C. (2009) J Affect Disord, 113(1-2), 1–20.</p>
+  <p class="note-sm reveal">影響の度合いはエピソード回数・重症度・服薬状況・年齢によって異なる。また、認知機能リハビリテーション（心理教育・代償的戦略）が就労継続の助けになる場合もある。</p>
+</div>
+</section>
+
+<!-- S10 就労 -->
+<section id="s10">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">10 / 就労への影響</div>
+    <h2 class="section-title">職場・訓練場面への具体的影響</h2>
+    <p class="section-desc">状態によって課題の種類が異なる。エピソードの時期ごとに何が起きやすいかを把握しておくと、見立てと対応が立てやすくなる。</p>
+  </div>
+  <div class="impact-grid reveal">
+    <div class="card amber">
+      <h3>躁・軽躁期の就労課題</h3>
+      <ul style="padding-left:1.1rem;font-size:0.88rem;line-height:1.8;color:#374151;">
+        <li>過剰なコミットメント（業務・プログラムの詰め込みすぎ）</li>
+        <li>衝動的な就職活動・内定承諾</li>
+        <li>対人関係での境界侵犯・易怒性</li>
+        <li>誇大な自己評価による業務上の摩擦</li>
+        <li>睡眠削減による疲弊（本人が気づかない）</li>
+      </ul>
+    </div>
+    <div class="card blue">
+      <h3>うつ期の就労課題</h3>
+      <ul style="padding-left:1.1rem;font-size:0.88rem;line-height:1.8;color:#374151;">
+        <li>遅刻・欠席の増加（過眠・気力低下）</li>
+        <li>情報処理速度の低下→業務遅延</li>
+        <li>集中困難・ミスの増加</li>
+        <li>将来への絶望感→就職活動の停滞</li>
+        <li>人間関係からの引きこもり</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>寛解期（安定期）の就労課題</h3>
+      <ul style="padding-left:1.1rem;font-size:0.88rem;line-height:1.8;color:#374151;">
+        <li>認知機能への持続的影響（処理速度・記憶等）</li>
+        <li>薬の副作用（眠気・集中力低下・体重変化）</li>
+        <li>「もう薬はいらない」という服薬中断衝動</li>
+        <li>睡眠リズム管理（シフト勤務・通勤）</li>
+        <li>就職後のストレス→再発トリガー</li>
+      </ul>
+    </div>
+    <div class="card purple">
+      <h3>開示・非開示の問題</h3>
+      <ul style="padding-left:1.1rem;font-size:0.88rem;line-height:1.8;color:#374151;">
+        <li>精神疾患への偏見で開示に踏み切れない人が多い</li>
+        <li>開示した場合：合理的配慮（業務量・勤務形態）の交渉が可能</li>
+        <li>非開示の場合：「普通に働ける」前提で業務が組まれるリスク</li>
+        <li>支援者は本人と開示の意思決定を丁寧に検討する</li>
+      </ul>
+    </div>
+  </div>
+  <div class="prodrome-section reveal">
+    <h3 class="prodrome-title">前駆サイン：スタッフが観察できるもの</h3>
+    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1rem;">エピソードの本格化の前に、しばしば観察可能な変化が現れる。「最近何か変化ありましたか」という一言を継続的に使うことで気づきやすくなる。</p>
+    <div class="prodrome-grid">
+      <div class="prodrome-item">
+        <span class="pdot manic"></span>
+        <p><strong>躁・軽躁の前駆：</strong>睡眠時間が急に短くなった（「全然眠れなくても大丈夫」）</p>
+      </div>
+      <div class="prodrome-item">
+        <span class="pdot dep"></span>
+        <p><strong>うつの前駆：</strong>遅刻が増えた、返信が遅くなった</p>
+      </div>
+      <div class="prodrome-item">
+        <span class="pdot manic"></span>
+        <p><strong>躁・軽躁の前駆：</strong>急に多弁になった、話が止まらない、新しい計画を次々と話す</p>
+      </div>
+      <div class="prodrome-item">
+        <span class="pdot dep"></span>
+        <p><strong>うつの前駆：</strong>プログラムへの意欲低下、言語化が減る、「疲れた」が増える</p>
+      </div>
+      <div class="prodrome-item">
+        <span class="pdot manic"></span>
+        <p><strong>躁・軽躁の前駆：</strong>「もう薬はいらないと思う」という発言</p>
+      </div>
+      <div class="prodrome-item">
+        <span class="pdot dep"></span>
+        <p><strong>うつの前駆：</strong>将来への絶望的な発言が増える、目の前のことへの興味が薄れる</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S11 就労定着 -->
+<section id="s11" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">11 / 就労定着</div>
+    <h2 class="section-title">就職後も続く支援 — 定着の視点</h2>
+    <p class="section-desc">就労移行支援の成果は「採用」ではなく「継続就労」。双極症の経過特性（再発率の高さ・認知機能への影響・環境変化への脆弱性）を踏まえた定着支援の視点を整理する。</p>
+  </div>
+
+  <p class="retention-intro reveal">Gitlin et al.（2011, J Clin Psychiatry）によると、治療継続中でも双極症の再発率は5年間で約70%に達する。就職は出発点であり、定着段階こそ支援の密度が問われる。</p>
+
+  <div class="retention-cols reveal">
+
+    <div class="ret-col">
+      <div class="ret-col-hd challenge">定着を妨げるリスク因子</div>
+      <div class="ret-col-body">
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="ret-item-text"><strong>睡眠リズムの乱れ</strong><br>残業・シフト変更・通勤疲労による睡眠変動はエピソード再発の主要トリガー。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="ret-item-text"><strong>累積ストレスとストレス閾値の低下</strong><br>人間関係の変化・業務量増加・役割変化が引き金になりやすい。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="ret-item-text"><strong>服薬中断・通院中断</strong><br>「調子が良くなった」と感じた時期にこそ中断リスクが高まる。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="ret-item-text"><strong>「調子が良い」期の過活動</strong><br>軽躁状態での過剰な残業・引き受け過ぎが後のうつ病相を引き起こす。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="ret-item-text"><strong>セルフスティグマと孤立</strong><br>「自分のことを話せない」という孤立が早期サインの見落としにつながる。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ret-col">
+      <div class="ret-col-hd protect">定着を支える保護因子</div>
+      <div class="ret-col-body">
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="ret-item-text"><strong>一定の睡眠・生活リズムの確保</strong><br>起床・就寝時刻の安定は最も有効な再発予防策のひとつ（IPSRT の核心）。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="ret-item-text"><strong>段階的な業務負荷の調整</strong><br>入職直後から業務量を急増させない。成功体験を積み重ねながら徐々に拡大する。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="ret-item-text"><strong>医療・職場・支援の三者連携</strong><br>主治医・職場担当者・就労移行支援員が情報を共有できる関係性を構築する。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="ret-item-text"><strong>就労後の定期的フォローアップ</strong><br>就職後3〜6ヶ月は最もリスクが高い時期。定期的な確認の場を維持する。</div>
+        </div>
+        <div class="ret-item">
+          <svg class="ret-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="ret-item-text"><strong>自己開示の範囲と方法の事前整理</strong><br>誰に・何を・どこまで開示するかを就職前に本人と一緒に考えておく。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mood-diary-box reveal">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/>
+    </svg>
+    <div class="mood-diary-body">
+      <strong>気分日誌（モードモニタリング）の活用</strong>
+      <p>毎日の気分・睡眠・活動量・飲酒量などを記録する「気分日誌」は、IPSRT（対人関係・社会リズム療法）でも中核的なツール。本人が自分のパターンを認識し、前駆サインに早期に気づくための実践的スキルとして、就職前から習慣化しておくことが望ましい。支援者はその記録を「問題を探すための証拠」としてではなく、「本人の自己理解と協働するための資料」として扱う視点が重要。</p>
+    </div>
+  </div>
+
+  <p class="comor-src reveal">出典：Gitlin MJ et al. (2011). Subsyndromal depressive symptoms after symptomatic recovery from mania are associated with delayed functional recovery. <em>J Clin Psychiatry</em>, 72(5), 692–697. | Frank E et al. (2005). Two-year outcomes for interpersonal and social rhythm therapy in individuals with bipolar I disorder. <em>Arch Gen Psychiatry</em>, 62(9), 996–1004.</p>
+
+</div>
+</section>
+
+
+<!-- S12 治療 -->
+<section id="s12">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">12 / 治療</div>
+    <h2 class="section-title">治療の3本柱</h2>
+    <p class="section-desc">双極症の治療は薬物療法と心理社会的介入の組み合わせが基本。薬の役割・限界と、心理社会的介入のエビデンスを把握しておく。</p>
+  </div>
+  <div class="pillar-grid reveal">
+    <div class="pillar-card">
+      <div class="pillar-hd p1">
+        <div class="pillar-num">PILLAR 01</div>
+        <div class="pillar-ttl">気分安定薬</div>
+      </div>
+      <div class="pillar-bd">
+        <ul>
+          <li><strong>リチウム：</strong>躁・うつ両相に有効。自殺リスク低減効果の根拠あり。腎機能・甲状腺への影響を定期チェックが必要</li>
+          <li><strong>バルプロ酸：</strong>急性躁状態に有効。肝機能への影響に注意</li>
+          <li><strong>ラモトリギン：</strong>うつ病相の予防に特効。皮疹（SJS）のリスクがあり用量を緩やかに増量する</li>
+        </ul>
+        <div class="pillar-note">服薬中断は再発の主要な原因。副作用への対処が継続の鍵。</div>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-hd p2">
+        <div class="pillar-num">PILLAR 02</div>
+        <div class="pillar-ttl">非定型抗精神病薬</div>
+      </div>
+      <div class="pillar-bd">
+        <ul>
+          <li><strong>クエチアピン：</strong>急性躁・うつ両相に使用。眠気・体重増加が副作用として出やすい</li>
+          <li><strong>オランザピン：</strong>急性躁・維持期に使用。代謝系副作用（体重・血糖）に注意</li>
+          <li><strong>アリピプラゾール：</strong>躁状態および維持療法。アクチベーション（不安・焦燥）が出ることも</li>
+        </ul>
+        <div class="pillar-note">気分安定薬と組み合わせて使うことが多い。副作用は就労上の課題にもなる。</div>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-hd p3">
+        <div class="pillar-num">PILLAR 03</div>
+        <div class="pillar-ttl">IPSRT・心理教育</div>
+      </div>
+      <div class="pillar-bd">
+        <ul>
+          <li><strong>IPSRT（対人関係・社会リズム療法）：</strong>日常リズムの安定化が再発予防につながることをRCTで確認（Frank et al., 2005）</li>
+          <li><strong>心理教育：</strong>前駆サインの自己モニタリング・薬の役割理解。再発率を有意に低下させる研究あり</li>
+          <li><strong>認知行動療法（CBT）：</strong>うつ病相への補助として使用されることも</li>
+        </ul>
+        <div class="pillar-note">「生活リズムを守る支援」はIPSRTの中核と重なる。就労移行での関わりは自然とこのアプローチに近い。</div>
+      </div>
+    </div>
+  </div>
+  <div class="caution-box reveal">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <p><strong>⚠ 重要：</strong>双極症に対する<strong>抗うつ薬の単独投与は躁転リスクがある</strong>ため、気分安定薬・非定型抗精神病薬との併用が原則（日本うつ病学会 双極性障害委員会ガイドライン）。「うつ病」として治療されてきた人が実は双極症Ⅱ型だったケースでは、この問題が生じていることがある。主治医との連携の中で治療方針を把握しておくことが重要。</p>
+  </div>
+</div>
+</section>
+
+<!-- S13 支援 -->
+<section id="s13" class="alt-bg">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">13 / 支援の実践</div>
+    <h2 class="section-title">支援者として何ができるか</h2>
+    <p class="section-desc">「治す」ことは支援者の役割ではない。エピソードのリカバリーを側面から支え、長期的な就労継続の環境を整えることが核心になる。</p>
+  </div>
+  <div class="practice-list">
+    <div class="practice-item reveal">
+      <div class="prac-num">1</div>
+      <div class="prac-content">
+        <h4>「今どの状態か」を継続的に確認する</h4>
+        <p>「調子はどうですか」という抽象的な問いより、「今週は何時間ぐらい眠れていますか」「最近やる気の波はありますか」など具体的な観察点を使う。面談のたびに前回との比較をすることで変化に気づきやすくなる。</p>
+      </div>
+    </div>
+    <div class="practice-item reveal">
+      <div class="prac-num">2</div>
+      <div class="prac-content">
+        <h4>「絶好調サイン」を無条件に喜ばない</h4>
+        <p>急な活気・多弁・計画の増加は、軽躁の始まりである可能性がある。本人の意欲を否定せず、「嬉しいですね。睡眠はとれていますか」と確認する一言を添える習慣を持つ。就職を急かすよりも、状態の安定を優先する視点が長期的な就労につながる。</p>
+      </div>
+    </div>
+    <div class="practice-item reveal">
+      <div class="prac-num">3</div>
+      <div class="prac-content">
+        <h4>生活リズムの可視化をともに行う</h4>
+        <p>IPSRTの中核原則：一定した生活リズムが気分の安定を支える。睡眠・活動量・気分の記録（気分日記）を支援の中に組み込む。「記録させる」のではなく、「一緒に見ていく」という姿勢が継続につながりやすい。</p>
+      </div>
+    </div>
+    <div class="practice-item reveal">
+      <div class="prac-num">4</div>
+      <div class="prac-content">
+        <h4>服薬をめぐる対話を開く</h4>
+        <p>「薬をやめたい」「もう飲まなくてもいいと思う」という発言は、軽躁の始まりである場合も、副作用への正当な不満である場合も、回復実感の表れである場合もある。発言の背景を丁寧に探索する。副作用（眠気・体重変化）が就労訓練に与える影響も一緒に考え、必要であれば主治医に情報を届ける橋渡しを担う。</p>
+      </div>
+    </div>
+    <div class="practice-item reveal">
+      <div class="prac-num">5</div>
+      <div class="prac-content">
+        <h4>主治医との連携を支援する</h4>
+        <p>前駆サインや就労上の変化を観察した際、本人の同意を得た上で通院に活かせるよう支援する。「受診を勧める」だけでなく、「次回の受診でこの点を話してみませんか」と具体的に伝える形が実効的なことが多い。変化の記録を可視化して本人が持参できる形にすることも有効。</p>
+      </div>
+    </div>
+    <div class="practice-item reveal">
+      <div class="prac-num">6</div>
+      <div class="prac-content">
+        <h4>長期的な視点をもち、再発を「失敗」にしない</h4>
+        <p>双極症は再発性の慢性疾患であり、エピソードの再来は珍しくない。「また悪化してしまった」という評価軸ではなく、「エピソードとエピソードの間をどう生きるかを支援する」という視点が持続可能な支援につながる。支援者自身の感情消耗（バーンアウト）にも意識を向ける。</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S14 文献 -->
+<section id="s14">
+<div class="section-inner">
+  <div class="section-header reveal">
+    <div class="section-num">14 / 参考文献・情報源</div>
+    <h2 class="section-title">主要な引用文献</h2>
+    <p class="section-desc">本リファレンスで参照した主要文献。一次情報の確認が必要な場合は以下を参照。</p>
+  </div>
+  <div class="ref-list reveal">
+    <div class="ref-item">
+      <strong>Hirschfeld, R. M. A., et al. (2003).</strong> Perceptions and impact of bipolar disorder: How far have we really come? Results of the national depressive and manic-depressive association 2000 survey. <em>Journal of Clinical Psychiatry, 64</em>(2), 161–174. PMID: 12625799<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ 69%誤診・診断遅延6〜10年のデータの出典</span>
+    </div>
+    <div class="ref-item">
+      <strong>McGuffin, P., et al. (2003).</strong> The heritability of bipolar affective disorder and the genetic relationship to unipolar depression. <em>Archives of General Psychiatry, 60</em>(5), 497–502.<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ 遺伝率70〜85%（双生児研究）の出典</span>
+    </div>
+    <div class="ref-item">
+      <strong>Bora, E., Yucel, M., &amp; Pantelis, C. (2009).</strong> Cognitive endophenotypes of bipolar disorder: A meta-analysis of neuropsychological deficits in euthymic patients and their first-degree relatives. <em>Journal of Affective Disorders, 113</em>(1-2), 1–20.<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ 寛解期における認知機能低下のメタ分析</span>
+    </div>
+    <div class="ref-item">
+      <strong>Frank, E., et al. (2005).</strong> Two-year outcomes for interpersonal and social rhythm therapy in individuals with bipolar I disorder. <em>Archives of General Psychiatry, 62</em>(9), 996–1004. PMID: 16143731<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ IPSRT RCT（再発率低下の有効性を確認）</span>
+    </div>
+    <div class="ref-item">
+      <strong>日本うつ病学会 双極性障害委員会（2023年版）.</strong> 双極性障害（躁うつ病）とうつ病の治療ガイドライン. 日本うつ病学会.<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ 抗うつ薬単独使用への注意等の国内ガイドライン</span>
+    </div>
+    <div class="ref-item">
+      <strong>American Psychiatric Association (2022).</strong> <em>Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition, Text Revision (DSM-5-TR).</em> APA Publishing.<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ 各エピソードの診断基準</span>
+    </div>
+    <div class="ref-item">
+      <strong>World Health Organization (2022).</strong> <em>International Classification of Diseases, 11th Revision (ICD-11).</em> WHO.<br>
+      <span style="font-size:0.78rem;color:#9ca3af;">→ 双極症の国際分類</span>
+    </div>
+  </div>
+  <p class="note-sm reveal" style="margin-top:1.5rem;">本資料に記載された研究知見は、特定の条件下での集団統計であり、個々のケースへの直接の適用には慎重であることが求められる。支援上の判断は個別の文脈・主治医との連携のもとで行うこと。</p>
+</div>
+</section>
+</main>
+
+<footer>
+  <strong>岡村雄一郎</strong>
+</footer>
+
+<script>
+  // Progress bar
+  function updateProgress() {
+    var el = document.getElementById('progress-bar');
+    var h = document.body.scrollHeight - window.innerHeight;
+    el.style.width = (h > 0 ? (window.scrollY / h * 100) : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive: true});
+
+  // Nav active
+  var sections = document.querySelectorAll('section[id]');
+  var navItems = document.querySelectorAll('.nav-item');
+  function updateNav() {
+    var y = window.scrollY + 100;
+    var active = null;
+    sections.forEach(function(s) {
+      if (s.offsetTop <= y) active = s.id;
+    });
+    navItems.forEach(function(n) {
+      var target = n.getAttribute('onclick').match(/'(s\d+)'/);
+      if (target) n.classList.toggle('active', target[1] === active);
+    });
+  }
+  window.addEventListener('scroll', updateNav, {passive: true});
+
+  // Nav jump
+  function navJump(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior: 'smooth'});
+  }
+
+  // Wave toggle
+  function toggleWave(type) {
+    document.getElementById('wave-t1').style.opacity = type === 1 ? '1' : '0';
+    document.getElementById('wave-t2').style.opacity = type === 2 ? '1' : '0';
+    document.getElementById('btn-t1').classList.toggle('active', type === 1);
+    document.getElementById('btn-t2').classList.toggle('active', type === 2);
+  }
+
+  // Accordion
+  function toggleAcc(idx) {
+    var item = document.getElementById('acc' + idx);
+    var body = document.getElementById('acc-body' + idx);
+    var isOpen = item.classList.contains('open');
+    // Close all
+    for (var i = 0; i < 4; i++) {
+      var it = document.getElementById('acc' + i);
+      var bd = document.getElementById('acc-body' + i);
+      if (it) it.classList.remove('open');
+      if (bd) { bd.style.maxHeight = '0'; }
+      var hd = it ? it.querySelector('.acc-hd') : null;
+      if (hd) hd.setAttribute('aria-expanded', 'false');
+    }
+    if (!isOpen) {
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.querySelector('.acc-hd').setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  // Scroll reveal
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    });
+  }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+
+  // Cognition bars
+  var cogObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var bar = e.target.querySelector('.cog-bar');
+        if (bar) bar.style.width = bar.getAttribute('data-width') || '60%';
+        cogObs.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.3});
+  document.querySelectorAll('.cog-card').forEach(function(el) { cogObs.observe(el); });
+</script>
+</body>
+</html>
